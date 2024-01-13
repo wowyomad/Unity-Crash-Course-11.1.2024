@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 427345266}
   - component: {fileID: 427345265}
   - component: {fileID: 427345264}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platforom (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,13 +246,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 427345263}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -1, w: 0.0000028163195}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10.29, y: -0.12, z: 0}
   m_LocalScale: {x: 11.9, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,7 +483,7 @@ GameObject:
   - component: {fileID: 718460407}
   - component: {fileID: 718460406}
   - component: {fileID: 718460405}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Platforom (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -499,7 +499,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 718460404}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 31b9983f2e9907a40826d750eecce78a, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -614,7 +614,7 @@ GameObject:
   - component: {fileID: 804004098}
   - component: {fileID: 804004099}
   m_Layer: 0
-  m_Name: Animator
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -719,7 +719,7 @@ GameObject:
   - component: {fileID: 1413348683}
   - component: {fileID: 1413348682}
   - component: {fileID: 1413348681}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platforom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -849,7 +849,7 @@ GameObject:
   - component: {fileID: 1531694983}
   - component: {fileID: 1531694982}
   - component: {fileID: 1531694981}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Platforom (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -865,7 +865,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1531694980}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 31b9983f2e9907a40826d750eecce78a, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1052,7 +1052,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 1
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 3
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -1077,8 +1077,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee810fa06dd29b5458fc5c6ca20021ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalSpeed: 10
-  jumpForce: 20
+  horizontalSpeed: 8
+  jumpForce: 15
+  groundCheckDistance: 0.2
+  wallCheckDistance: 0.2
 --- !u!1001 &8197840935412067630
 PrefabInstance:
   m_ObjectHideFlags: 0
