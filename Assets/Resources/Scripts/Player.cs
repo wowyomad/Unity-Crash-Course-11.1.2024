@@ -10,9 +10,24 @@ public class Player : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField]
-    private float horizontalSpeed;
+    private float movementSpeed;
     [SerializeField]
     private float jumpForce;
+    [SerializeField]
+
+    [Header("Dash")]
+    private float dashSpeed;
+    [SerializeField]
+    private float dashDuration;
+
+    [SerializeField]
+    private float dashCoolDown;
+    private float dashCooldownTimer;
+    private float dashTimer = 0.0f;
+
+
+    private bool IsDashing => dashTimer > 0.0f;
+    private bool IsDashOnCooldown => dashCooldownTimer > 0.0f;
 
 
     [Header("Collisions")]
@@ -58,6 +73,10 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        dashTimer -= Time.deltaTime;
+        dashCooldownTimer -= Time.deltaTime;
+
+
         CollisionChecks();
         InputController();
         Move();
@@ -67,10 +86,29 @@ public class Player : MonoBehaviour
 
     void InputController()
     {
-        xInput = Input.GetAxisRaw("Horizontal");
+        if (!IsDashing)
+            xInput = Input.GetAxisRaw("Horizontal");
+
         if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
             Jump();
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            DashAbility();
+        }
+
+
+    }
+
+    void DashAbility()
+    {
+        if (!IsDashOnCooldown)
+        {
+            dashTimer = dashDuration;
+            dashCooldownTimer = dashCoolDown;
         }
     }
 
@@ -79,22 +117,26 @@ public class Player : MonoBehaviour
         bool isMoving = xInput != 0;
         anim.SetBool("isMoving", isMoving);
         float yVelocity = rb.velocity.y;
-        anim.SetFloat("yVelocity", yVelocity);
+        if(!isGrounded)
+        {
+            anim.SetFloat("yVelocity", yVelocity);
+
+        }
         anim.SetBool("isGrounded", isGrounded);
+
+        anim.SetBool("isDashing", IsDashing);
     }
 
     private void Move()
     {
-        if (!isFacingWall)
-        {
-            float deltaX = xInput * horizontalSpeed;
-            rb.velocity = new Vector2(deltaX, rb.velocity.y);
+        float xSpeed = IsDashing
+            ? dashSpeed * facingDir
+            : movementSpeed * xInput;
+        float ySpeed = IsDashing
+            ? 0
+            : rb.velocity.y;
 
-        }
-        else
-        {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-        }
+        rb.velocity = new Vector2(xSpeed, ySpeed);
     }
 
     private void FlipController()
@@ -114,8 +156,9 @@ public class Player : MonoBehaviour
 
     private void Flip()
     {
-        transform.Rotate(0, 180.0f, 0);
         facingDir *= -1;
+        transform.localScale = new Vector2(facingDir, 1);
+
     }
 
     private bool IsGrounded()
