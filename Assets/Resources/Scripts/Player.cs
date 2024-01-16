@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Internal;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
 
     [Header("Movement")]
@@ -24,27 +24,17 @@ public class Player : MonoBehaviour
     private float dashCoolDown;
     private float dashCooldownTimer;
     private float dashTimer = 0.0f;
-
-
     private bool IsDashing => dashTimer > 0.0f;
     private bool IsDashOnCooldown => dashCooldownTimer > 0.0f;
 
 
-    [Header("Collisions")]
-    [SerializeField]
-    private float groundCheckDistance = 0.2f;
-    [SerializeField]
-    private float wallCheckDistance = 0.2f;
+    private int comboCount = -1;
+    private bool isAttacking = false;
 
+    private float attackDuration;
     [SerializeField]
-    private LayerMask whatIsGround;
-    [SerializeField]
-    private LayerMask whatIsWall;
+    private float attackWindow = 1f;
 
-    [SerializeField]
-    private bool isGrounded;
-    [SerializeField]
-    private bool isFacingWall;
 
 
     private float xInput;
@@ -54,18 +44,17 @@ public class Player : MonoBehaviour
     private Collider2D col;
 
 
-    private int facingDir = 1;
-    public bool IsFacingRight => facingDir == 1;
-    public bool IsFacingLeft => facingDir == -1;
+   
 
     private void Awake()
     {
-        whatIsGround = LayerMask.GetMask("Ground");
-        whatIsWall = LayerMask.GetMask("Wall");
+        base.Awake();
     }
 
     void Start()
     {
+        base.Start();
+
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         col = GetComponent<Collider2D>();
@@ -73,21 +62,48 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        base.Update();
+
         dashTimer -= Time.deltaTime;
         dashCooldownTimer -= Time.deltaTime;
+        attackDuration += Time.deltaTime;
 
 
-        CollisionChecks();
         InputController();
         Move();
         FlipController();
         AnimationController();
     }
 
+    void Attack()
+    {
+        comboCount++;
+        if (comboCount > 2)
+        {
+            comboCount = 0;
+        }
+        if(attackDuration > attackWindow)
+        {
+            comboCount = 0;
+        }
+        attackDuration = 0.0f;
+        isAttacking = true;
+    }
+
+    public void AttackOver()
+    {
+        isAttacking = false;
+    }
+
     void InputController()
     {
         if (!IsDashing)
             xInput = Input.GetAxisRaw("Horizontal");
+
+        if(Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Attack();
+        }
 
         if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
@@ -125,6 +141,8 @@ public class Player : MonoBehaviour
         anim.SetBool("isGrounded", isGrounded);
 
         anim.SetBool("isDashing", IsDashing);
+        anim.SetBool("isAttacking", isAttacking);
+        anim.SetInteger("comboCount", comboCount);
     }
 
     private void Move()
@@ -151,34 +169,5 @@ public class Player : MonoBehaviour
     {
         float deltaY = jumpForce;
         rb.velocity = new Vector2(rb.velocity.x, deltaY);
-    }
-
-
-    private void Flip()
-    {
-        facingDir *= -1;
-        transform.localScale = new Vector2(facingDir, 1);
-
-    }
-
-    private bool IsGrounded()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, col.bounds.extents.y + groundCheckDistance, whatIsGround);
-        return hit.collider != null;
-    }
-
-    private bool IsFacingWall()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(facingDir, 0), col.bounds.extents.x + wallCheckDistance, whatIsWall);
-        return hit.collider != null;
-    }
-
-    private void CollisionChecks()
-    {
-        isGrounded = IsGrounded();
-        isFacingWall = IsFacingWall();
-
-        print($"isGrounded: {isGrounded}");
-        print($"isFacingWall: {isFacingWall}");
     }
 }

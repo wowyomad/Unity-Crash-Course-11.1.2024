@@ -417,7 +417,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 551819538}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 31b9983f2e9907a40826d750eecce78a, type: 2}
+  m_Material: {fileID: 6200000, guid: 4d2fbb1027c94384391c0ac287770c25, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -743,6 +743,7 @@ GameObject:
   - component: {fileID: 804004097}
   - component: {fileID: 804004098}
   - component: {fileID: 804004099}
+  - component: {fileID: 804004100}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -838,6 +839,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &804004100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 804004096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87f3820e3b3f3d4baa3c1c61f24873d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1413348680
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,12 +1350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee810fa06dd29b5458fc5c6ca20021ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
-  jumpForce: 20
-  dashSpeed: 15
-  dashDuration: 0.5
-  groundCheckDistance: 0.2
-  wallCheckDistance: 0.2
   whatIsGround:
     serializedVersion: 2
     m_Bits: 0
@@ -1351,6 +1358,14 @@ MonoBehaviour:
     m_Bits: 0
   isGrounded: 0
   isFacingWall: 0
+  groundCheckDistance: 0.2
+  wallCheckDistance: 0.2
+  movementSpeed: 5
+  jumpForce: 20
+  dashSpeed: 15
+  dashDuration: 0.5
+  dashCoolDown: 3
+  attackWindow: 1
 --- !u!1 &1929278715
 GameObject:
   m_ObjectHideFlags: 0
